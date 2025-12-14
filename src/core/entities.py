@@ -4,7 +4,6 @@ from datetime import date
 from typing import Optional
 from .validators import require_not_empty, require_positive, require_non_negative
 
-
 @dataclass(frozen=True)
 class Vehicle:
     """Entidad Vehículo."""
@@ -78,3 +77,21 @@ class MaintenanceRecord:
         require_not_empty("vehicle_id", self.vehicle_id)
         require_not_empty("tipo de mantenimiento", self.maintenance_type)
         require_non_negative("costo (USD)", self.cost_usd)
+        
+        
+@dataclass(frozen=True)
+class Usuario:
+    """Entidad Usuario del sistema."""
+    id: str
+    nombre: str
+    correo: str
+    contrasena: str
+    rol: str  # admin / operador
+
+    def __post_init__(self):
+        require_not_empty("id", self.id)
+        require_not_empty("nombre", self.nombre)
+        require_not_empty("correo", self.correo)
+        require_not_empty("contraseña", self.contrasena)
+        if self.rol not in ("admin", "operador"):
+            raise ValueError(f"Rol inválido: {self.rol}")
